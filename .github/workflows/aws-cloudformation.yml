@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  aws-cloudformation-deployment:
+  awscloudformationdeployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.7
