@@ -36,8 +36,24 @@ function New-OrUpdate-CFNStack {
     }
 }
 
-# Read the template file content
+# Read the template file content as a single string
 $TemplateBody = Get-Content -Path $TemplateFilePath -Raw
+
+# Debug: Print the template body to verify its content
+Write-Host "TemplateBody content:"
+Write-Host $TemplateBody
 
 # Execute the function with provided parameters
 New-OrUpdate-CFNStack -StackName $StackName -TemplateBody $TemplateBody
+
+# Verify stack creation
+try {
+    $stackStatus = Get-CFNStack -StackName $StackName -ErrorAction Stop
+    if ($stackStatus -ne $null) {
+        Write-Host "Stack [$StackName] exists and has the following status: $($stackStatus.StackStatus)"
+    } else {
+        Write-Host "Stack [$StackName] does not exist."
+    }
+} catch {
+    Write-Host "Failed to retrieve stack status for [$StackName]: $_"
+}
