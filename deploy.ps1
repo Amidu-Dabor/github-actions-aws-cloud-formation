@@ -39,6 +39,16 @@ function New-OrUpdate-CFNStack {
 # Read the template file content as a single string
 $TemplateBody = Get-Content -Path $TemplateFilePath -Raw
 
+# Validate the template
+Write-Host "Validating CloudFormation template..."
+try {
+    Test-CFNTemplate -TemplateBody $TemplateBody -ErrorAction Stop
+    Write-Host "Template validation succeeded."
+} catch {
+    Write-Host "Template validation failed: $_"
+    exit 1
+}
+
 # Debug: Print the template body to verify its content
 Write-Host "TemplateBody content:"
 Write-Host $TemplateBody
