@@ -1,12 +1,6 @@
-$StackName = 'newstack'
-$TemplateBody = Get-Content -Path cloudformation-vpc.yml -Raw
-
-# New-CFNStack -StackName $StackName -TemplateBody $TemplateBody
-
-
 param (
-    [string]$StackName,
-    [string]$TemplateBody
+    [string]$StackName = 'aws-vpc-stack',
+    [string]$TemplateBody = Get-Content -Path 'cloudformation-vpc.yml' -Raw
 )
 
 function New-OrUpdate-CFNStack {
@@ -15,24 +9,28 @@ function New-OrUpdate-CFNStack {
         [string]$TemplateBody
     )
 
-    $stackExists = (Get-CFNStack -StackName $StackName -ErrorAction SilentlyContinue) -ne $null
+    $stackExists = Get-CFNStack -StackName $StackName -ErrorAction SilentlyContinue -ne $null
 
     if ($stackExists) {
         Write-Host "Stack [$StackName] already exists. Updating the stack..."
-        Update-CFNStack -StackName $StackName -TemplateBody $TemplateBody
-        if ($?) {
+        try {
+            Update-CFNStack -StackName $StackName -TemplateBody $TemplateBody -ErrorAction Stop
             Write-Host "Stack [$StackName] updated successfully."
-        } else {
-            Write-Host "Failed to update stack [$StackName]."
-            exit 1
+        } catch {
+            if ($_.Exception.Message -like "*No updates are to be performed*") {
+                Write-Host "No updates are to be performed on stack [$StackName]."
+            } else {
+                Write-Host "Failed to update stack [$StackName]: $_"
+                exit 1
+            }
         }
     } else {
         Write-Host "Creating new stack [$StackName]..."
-        New-CFNStack -StackName $StackName -TemplateBody $TemplateBody
-        if ($?) {
+        try {
+            New-CFNStack -StackName $StackName -TemplateBody $TemplateBody -ErrorAction Stop
             Write-Host "Stack [$StackName] created successfully."
-        } else {
-            Write-Host "Failed to create stack [$StackName]."
+        } catch {
+            Write-Host "Failed to create stack [$StackName]: $_"
             exit 1
         }
     }
@@ -40,4 +38,3 @@ function New-OrUpdate-CFNStack {
 
 # Execute the function with provided parameters
 New-OrUpdate-CFNStack -StackName $StackName -TemplateBody $TemplateBody
-
