@@ -9,7 +9,7 @@ function New-OrUpdate-CFNStack {
         [string]$TemplateBody
     )
 
-    $stackExists = Get-CFNStack -StackName $StackName -ErrorAction SilentlyContinue -ne $null
+    $stackExists = (Get-CFNStack -StackName $StackName -ErrorAction SilentlyContinue) -ne $null
 
     if ($stackExists) {
         Write-Host "Stack [$StackName] already exists. Updating the stack..."
