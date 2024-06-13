@@ -1,9 +1,9 @@
 Description: AWS CloudFormation VPC Stack
 Resources:
   VPCCBT:
-    Type: 'AWS::EC2::VPC'
+    Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: '10.60.0.0/16'
+      CidrBlock: 10.60.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
@@ -12,5 +12,5 @@ Resources:
   subnet1:
     Type: AWS::EC2::Subnet
     properties:
-      CidrBlock: '10.60.5.0/24'
+      CidrBlock: 10.60.5.0/24
       VpcId: !Ref VPCCBT
