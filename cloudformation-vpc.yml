@@ -9,3 +9,8 @@ Resources:
       Tags:
         - Key: Name
           Value: VPCCBT
+  subnet1:
+    Type: AWS::EC2::Subnet
+    properties:
+      CidrBlock: '10.60.5.0/24'
+      VpcId: !Ref VPCCBT
