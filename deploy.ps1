@@ -1,5 +1,5 @@
 param (
-    [string]$StackName = 'aws-vpc-stack',
+    [string]$StackName = 'awsvpcstack',
     [string]$TemplateFilePath = 'cloudformation-vpc.yml'
 )
 
