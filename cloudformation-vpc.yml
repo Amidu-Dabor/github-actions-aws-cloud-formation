@@ -1,11 +1,11 @@
 Description: AWS CloudFormation VPC Stack
 Resources:
   VPCCBT: # Resources to deploy
-    Type: 'AWS::EC2::VPC'
+    Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: '10.60.0.0/16'
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
+      CidrBlock: 10.60.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
       Tags:
         - Key: Name
           Value: VPCCBT
