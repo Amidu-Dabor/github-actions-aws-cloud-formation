@@ -1,6 +1,6 @@
 param (
     [string]$StackName = 'aws-vpc-stack',
-    [string]$TemplateBody = Get-Content -Path 'cloudformation-vpc.yml' -Raw
+    [string]$TemplateFilePath = 'cloudformation-vpc.yml'
 )
 
 function New-OrUpdate-CFNStack {
@@ -35,6 +35,9 @@ function New-OrUpdate-CFNStack {
         }
     }
 }
+
+# Read the template file content
+$TemplateBody = Get-Content -Path $TemplateFilePath -Raw
 
 # Execute the function with provided parameters
 New-OrUpdate-CFNStack -StackName $StackName -TemplateBody $TemplateBody
